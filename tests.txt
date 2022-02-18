@@ -1,0 +1,20 @@
+xcanary test
+
+x tally for target FAVOR guess FAVOR
+x tally for target FAVOR guess TESTS
+x tally for target FAVOR guess RAPID
+x tally for target FAVOR guess MAYOR
+
+x tally for target FAVOR guess FOR
+x tally for target FAVOR guess FERVER
+x tally for target FAVOR guess RIVER
+x tally for target FAVOR guess AMAST
+
+x tally for target SKILL guess SKILL
+x tally for target SKILL guess SWIRL
+x tally for target SKILL guess CIVIL
+x tally for target SKILL guess SHIMS
+x tally for target SKILL guess SILLY
+x tally for target SKILL guess SLICE
+
+x tally for target SAGAS guess ABASE
