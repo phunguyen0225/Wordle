@@ -1,0 +1,63 @@
+							HOW TO APPROACH THIS GAME
+
+1. How would you design this program? 
+
+	  We want to create a web-application that allows a user to play a game of 'Wordle'. The reason we want to make 
+	it a web-application is because we want the user to be able to click and type into a visual grid. In order for 
+	the player to easily differentiate between letters that were in the hidden word, in the right place AND in the 
+	hidden word, and not at all in the hidden word, they would need a changing UI. By using Javascript UI capabilities 
+	and HTML web application, we can provide that in a way that a desktop prompt or mobile game might not be able 
+	to implement, or at least, not as easily. We are going to need for the user to play the game through a web page in HTML. 
+	HTML will interact with Javascript code to carry out the operations of 'Wordle'.
+
+  	A grid.js, using HTML, will allow the user to type-in, remove, press buttons, and visualize matching letters with 
+	the key word. grid.js detects HTML changes and relates that a Wordle.js. Functions like getElementByID and eventListeners
+	enable grid.js to read the page for any edits made by the player.
+
+	  Javascript will run in the background as the class 'Wordle'. When a player reaches the end of a row, there will 
+	be a function that will enable a check if you can submit a word. Once the user presses to 'Guess', a system of checks 
+	will be made communicating to the page which squares of the grid will be highlighted to green, yellow, or left as gray. 
+	A global count will be going on in the background that will increment with each guess and a check will occur if all characters 
+	are green. It will determine what message to send saying if and what about the user's success.
+
+	  This program will be object-oriented. The grid file will need to create a wordle object from the Wordle class in order to 
+	reference its methods. The grid will instruct the HTML to then change the visual grid in accordance with whatever edits 
+	the user makes trying to play the game.
+  
+  
+  2. Discuss what language you would use.
+
+	  For this project we will be using Javascript and we will utilize design by capability. We pick Javascript over other 
+	languages and design by capability over design by contract for a few reasons:
+
+	  We pick Javascript over other languages because Javascript is a dynamically-typed language which fits with the design by 
+	capability. Javascript itself is used for interaction in the web browser, so it would have a lot of built-in interactive 
+	capabilities such as the eventListeners. Javascript is the only programming language native to the web browser, so we will 
+	use HTML/CSS to build a web application and implement Javascript for interaction.
+
+	  We will utilize the design by capability in this project because the design is for a dynamically-type language, such as Javascript. 
+	The benefit of the use of design by capability in this project is that we do not have to build up a complex hierarchy in the code. 
+	We do not have contract with other classes and so it is easier for us to make changes and if we do decide to maintain the code, it 
+	is easier for us to evolve.
+  
+ 
+ 3. How do you plan to structure the program, what libraries would you use?
+
+	  We would structure the program into 3 folders, the GUI folder will hold the display and interaction of the website. wordle.js 
+	is where we will have the Wordle class. Since we are using design by capabilities, we need automated testing to make sure the 
+	code works because there are no compilers checking for errors and we don't know if the code is wrong until we run them. 
+
+	  For automated testing, we would use a library called Mocha Chai. Mocha is a feature-rich Javascript test framework. Mocha tests run 
+	serially, allowing for flexible and accurate reporting. Although we do not know much about this framework, but we can pick it up along 
+	the way when building the project.
+
+	GUI  			#folder
+  		index.html  
+  		style.css
+  		grid.js
+
+	Wordle  		#class
+  		wordle.js   
+
+	test 			#automated testing using Mocha Chai
+  		wordle-test.js
