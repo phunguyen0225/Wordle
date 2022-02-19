@@ -8,7 +8,7 @@ const Match = {
 
 const WORD_SIZE = 5;
 
-function take(str) {
+function count(str) {
   return str.split('').reduce((acc, curr) => {
     if (acc[curr]) {
       acc[curr]++;
@@ -21,8 +21,7 @@ function take(str) {
 
 function tally(guess, target) {
   const response = new Array(WORD_SIZE).fill('NO_MATCH');
-  const guess_count = take(guess);
-  const target_count = take(target);
+  const target_count = count(target);
 
   if (guess.length !== WORD_SIZE) {
     throw new Error('Invalid guess');
@@ -31,19 +30,14 @@ function tally(guess, target) {
   for (let i = 0; i < WORD_SIZE; i++) {
     if (guess[i] === target[i]) {
       response[i] = Match.EXACT;
-    } else {
-      for (let j = 0; j < WORD_SIZE; j++) {
-        if (guess[j] === target[i]) {
-          if (guess_count[guess[j]] === target_count[target[i]]) {
-            if (response[j] !== Match.EXACT) {
-              response[j] = Match.MATCH;
-            }
-          } else {
-            response[j] = Match.MATCH;
-            break;
-          }
-        }
-      }
+      target_count[guess[i]]--;
+    }
+  }
+
+  for (let i = 0; i < WORD_SIZE; i++) {
+    if (response[i] === Match.NO_MATCH && target_count[guess[i]]) {
+      response[i] = Match.MATCH;
+      target_count[guess[i]]--;
     }
   }
 
