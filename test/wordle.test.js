@@ -57,21 +57,21 @@ test('play first attempt with correct guess', () => {
 
 test('play first attempt with invalid guess', () => {
   function readGuess() {
-    return 'TESTS';
+    return 'FOR';
   }
 
   let displayCalled = false;
 
   function display(numberOfAttempts, status, matchResponse, message) {
-    expect(numberOfAttempts).toEqual(1);
+    expect(numberOfAttempts).toEqual(0);
     expect(status).toEqual(WRONG);
     expect(matchResponse).toStrictEqual([NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH]);
     expect(message).toEqual('Try again');
     displayCalled = true;
   }
 
-  play('FAVOR', readGuess, display);
-  expect(displayCalled).toBe(true);
+  expect(() => play('FAVOR', readGuess, display)).toThrow('Invalid guess');
+  expect(displayCalled).toBe(false);
 });
 
 test('play first attempt with non-winning guess', () => {
@@ -92,5 +92,3 @@ test('play first attempt with non-winning guess', () => {
   play('FAVOR', readGuess, display);
   expect(displayCalled).toBe(true);
 });
-
-

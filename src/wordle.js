@@ -6,7 +6,7 @@ const Match = {
   NO_MATCH: 'NO_MATCH'
 };
 
-const Status = { 'WON': 'Won', 'WRONG': 'Wrong' };
+const Status = { 'WON': 'Won', 'WRONG': 'Wrong' }; //Feedback: IN_PROGRESS instead of WRONG
 
 const WORD_SIZE = 5;
 
@@ -48,8 +48,10 @@ function tally(guess, target) {
 
 
 function play(target, readGuess, display) {
-  const response = tally(readGuess(), target);
+  const guess = readGuess();
+  const response = tally(guess, target);
   const responseMatch = new Array(WORD_SIZE).fill('Exact');
+
   for (let i = 0; i < WORD_SIZE; i++) {
     if (responseMatch[i] === response[i]) {
       const displayOutput = display(1, Status.WON, response, 'Amazing');
