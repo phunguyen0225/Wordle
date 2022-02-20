@@ -1,6 +1,6 @@
 'use strict';
 
-const { tally, Match: { EXACT, MATCH, NO_MATCH } } = require('../src/wordle.js');
+const { tally, Match: { EXACT, MATCH, NO_MATCH }, Status: { WON, WRONG }, play } = require('../src/wordle.js');
 
 test('canary test', () => {
   expect(true).toBe(true);
@@ -35,3 +35,62 @@ test('canary test', () => {
     expect(() => tally(guess, answer)).toThrow(expectedResponse);
   });
 });
+
+test('play first attempt with correct guess', () => {
+  function readGuess() {
+    return 'FAVOR';
+  }
+
+  let displayCalled = false;
+
+  function display(numberOfAttempts, status, matchResponse, message) {
+    expect(numberOfAttempts).toEqual(1);
+    expect(status).toEqual(WON);
+    expect(matchResponse).toStrictEqual([EXACT, EXACT, EXACT, EXACT, EXACT]);
+    expect(message).toEqual('Amazing');
+    displayCalled = true;
+  }
+
+  play('FAVOR', readGuess, display);
+  expect(displayCalled).toBe(true);
+});
+
+test('play first attempt with invalid guess', () => {
+  function readGuess() {
+    return 'TESTS';
+  }
+
+  let displayCalled = false;
+
+  function display(numberOfAttempts, status, matchResponse, message) {
+    expect(numberOfAttempts).toEqual(1);
+    expect(status).toEqual(WRONG);
+    expect(matchResponse).toStrictEqual([NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH]);
+    expect(message).toEqual('Try again');
+    displayCalled = true;
+  }
+
+  play('FAVOR', readGuess, display);
+  expect(displayCalled).toBe(true);
+});
+
+test('play first attempt with non-winning guess', () => {
+  function readGuess() {
+    return 'TESTS';
+  }
+
+  let displayCalled = false;
+
+  function display(numberOfAttempts, status, matchResponse, message) {
+    expect(numberOfAttempts).toEqual(1);
+    expect(status).toEqual(WRONG);
+    expect(matchResponse).toStrictEqual([NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH]);
+    expect(message).toEqual('Try again');
+    displayCalled = true;
+  }
+
+  play('FAVOR', readGuess, display);
+  expect(displayCalled).toBe(true);
+});
+
+
