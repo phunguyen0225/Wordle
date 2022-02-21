@@ -6,7 +6,7 @@ const Match = {
   NO_MATCH: 'NO_MATCH'
 };
 
-const Status = { 'WON': 'Won', 'WRONG': 'Wrong' }; //Feedback: IN_PROGRESS instead of WRONG
+const Status = { 'WON': 'Won', 'IN_PROGRESS': 'In progress' };
 
 const WORD_SIZE = 5;
 
@@ -37,6 +37,7 @@ function tallyForPosition(position, guess, target) {
   return nonExactOccurInTarget >= guessOccurTilPosition ? Match.MATCH : Match.NO_MATCH;
 }
 
+
 function tally(guess, target) {
   if (guess.length !== WORD_SIZE) {
     throw new Error('Invalid guess');
@@ -47,17 +48,31 @@ function tally(guess, target) {
 }
 
 
+function determineStatus(response) {
+  return response.filter(match => match === Match.EXACT)
+    .length === WORD_SIZE ? Status.WON : Status.IN_PROGRESS;
+}
+
+
+function createMessage(attempts, status) {
+  const message = ['', 'Amazing', 'Splendid', 'Awesome', 'Yay'];
+  return status === Status.WON ? message[attempts] : '';
+}
+
+
 function play(target, readGuess, display) {
   const guess = readGuess();
   const response = tally(guess, target);
-  const responseMatch = new Array(WORD_SIZE).fill('Exact');
+  const status = determineStatus(response);
+  const message = createMessage(1, status);
+  display(1, status, response, message);
 
-  for (let i = 0; i < WORD_SIZE; i++) {
-    if (responseMatch[i] === response[i]) {
-      const displayOutput = display(1, Status.WON, response, 'Amazing');
-    } else {
-      const displayOutput = display(1, Status.WRONG, response, 'Try again');
-    }
+  if (status === Status.IN_PROGRESS) {
+    const guess = readGuess();
+    const response = tally(guess, target);
+    const status = determineStatus(response);
+    const message = createMessage(2, status);
+    display(2, status, response, message);
   }
 }
 

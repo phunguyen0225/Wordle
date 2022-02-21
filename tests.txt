@@ -18,3 +18,10 @@ x tally for target SKILL guess SILLY
 x tally for target SKILL guess SLICE
 
 x tally for target SAGAS guess ABASE
+
+x play first attempt with correct guess FAVOR
+x play first attemp with invalid guess FOR
+x play first attemp with non-winning guess TESTS
+
+x play second attempt with winning guess
+x play second attempt with non-winning guess

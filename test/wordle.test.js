@@ -1,6 +1,6 @@
 'use strict';
 
-const { tally, Match: { EXACT, MATCH, NO_MATCH }, Status: { WON, WRONG }, play } = require('../src/wordle.js');
+const { tally, Match: { EXACT, MATCH, NO_MATCH }, Status: { WON, IN_PROGRESS }, play } = require('../src/wordle.js');
 
 test('canary test', () => {
   expect(true).toBe(true);
@@ -52,6 +52,7 @@ test('play first attempt with correct guess', () => {
   }
 
   play('FAVOR', readGuess, display);
+
   expect(displayCalled).toBe(true);
 });
 
@@ -60,18 +61,7 @@ test('play first attempt with invalid guess', () => {
     return 'FOR';
   }
 
-  let displayCalled = false;
-
-  function display(numberOfAttempts, status, matchResponse, message) {
-    expect(numberOfAttempts).toEqual(0);
-    expect(status).toEqual(WRONG);
-    expect(matchResponse).toStrictEqual([NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH]);
-    expect(message).toEqual('Try again');
-    displayCalled = true;
-  }
-
-  expect(() => play('FAVOR', readGuess, display)).toThrow('Invalid guess');
-  expect(displayCalled).toBe(false);
+  expect(() => play('FAVOR', readGuess, undefined)).toThrow('Invalid guess');
 });
 
 test('play first attempt with non-winning guess', () => {
@@ -82,13 +72,68 @@ test('play first attempt with non-winning guess', () => {
   let displayCalled = false;
 
   function display(numberOfAttempts, status, matchResponse, message) {
-    expect(numberOfAttempts).toEqual(1);
-    expect(status).toEqual(WRONG);
-    expect(matchResponse).toStrictEqual([NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH]);
-    expect(message).toEqual('Try again');
-    displayCalled = true;
+    if (numberOfAttempts === 1) {
+      expect(numberOfAttempts).toEqual(1);
+      expect(status).toEqual(IN_PROGRESS);
+      expect(matchResponse).toStrictEqual([NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH]);
+      expect(message).toEqual('');
+      displayCalled = true;
+    }
   }
 
   play('FAVOR', readGuess, display);
+
   expect(displayCalled).toBe(true);
+});
+
+test('play second attempt with winning guess', () => {
+  const guesses = ['FAVOR', 'TESTS'];
+
+  function readGuess() {
+    return guesses.pop();
+  }
+
+  const expectedReponses = [
+    [2, WON, [EXACT, EXACT, EXACT, EXACT, EXACT], 'Splendid'],
+    [1, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+  ];
+
+  let displayCallCount = 0;
+
+  function display(numberOfAttempts, status, matchResponse, message) {
+    if (numberOfAttempts <= 2) {
+      expect([numberOfAttempts, status, matchResponse, message]).toStrictEqual(expectedReponses.pop());
+      displayCallCount += 1;
+    }
+  }
+
+  play('FAVOR', readGuess, display);
+
+  expect(displayCallCount).toBe(2);
+});
+
+test('play second attempt with non-winning guess', () => {
+  const guesses = ['BIZZY', 'TESTS'];
+
+  function readGuess() {
+    return guesses.pop();
+  }
+
+  const expectedReponses = [
+    [2, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [1, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+  ];
+
+  let displayCallCount = 0;
+
+  function display(numberOfAttempts, status, matchResponse, message) {
+    if (numberOfAttempts <= 2) {
+      expect([numberOfAttempts, status, matchResponse, message]).toStrictEqual(expectedReponses.pop());
+      displayCallCount += 1;
+    }
+  }
+
+  play('FAVOR', readGuess, display);
+
+  expect(displayCallCount).toBe(2);
 });
