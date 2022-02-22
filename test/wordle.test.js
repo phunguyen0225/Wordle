@@ -36,8 +36,8 @@ test('canary test', () => {
   });
 });
 
-test('play first attempt with correct guess', () => {
-  function readGuess() {
+test('play first attempt with correct guess', async () => {
+  async function readGuess() {
     return 'FAVOR';
   }
 
@@ -51,21 +51,21 @@ test('play first attempt with correct guess', () => {
     displayCalled = true;
   }
 
-  play('FAVOR', readGuess, display);
+  await play('FAVOR', readGuess, display);
 
   expect(displayCalled).toBe(true);
 });
 
-test('play first attempt with invalid guess', () => {
-  function readGuess() {
+test('play first attempt with invalid guess', async () => {
+  async function readGuess() {
     return 'FOR';
   }
 
-  expect(() => play('FAVOR', readGuess, undefined)).toThrow('Invalid guess');
+  await expect(async () => await play('FAVOR', readGuess, undefined)).rejects.toThrow('Invalid guess');
 });
 
-test('play first attempt with non-winning guess', () => {
-  function readGuess() {
+test('play first attempt with non-winning guess', async () => {
+  async function readGuess() {
     return 'TESTS';
   }
 
@@ -81,15 +81,15 @@ test('play first attempt with non-winning guess', () => {
     }
   }
 
-  play('FAVOR', readGuess, display);
+  await play('FAVOR', readGuess, display);
 
   expect(displayCalled).toBe(true);
 });
 
-test('play second attempt with winning guess', () => {
+test('play second attempt with winning guess', async () => {
   const guesses = ['FAVOR', 'TESTS'];
 
-  function readGuess() {
+  async function readGuess() {
     return guesses.pop();
   }
 
@@ -107,15 +107,15 @@ test('play second attempt with winning guess', () => {
     }
   }
 
-  play('FAVOR', readGuess, display);
+  await play('FAVOR', readGuess, display);
 
   expect(displayCallCount).toBe(2);
 });
 
-test('play second attempt with non-winning guess', () => {
+test('play second attempt with non-winning guess', async () => {
   const guesses = ['BIZZY', 'TESTS'];
 
-  function readGuess() {
+  async function readGuess() {
     return guesses.pop();
   }
 
@@ -133,7 +133,153 @@ test('play second attempt with non-winning guess', () => {
     }
   }
 
-  play('FAVOR', readGuess, display);
+  await play('FAVOR', readGuess, display);
 
   expect(displayCallCount).toBe(2);
 });
+
+
+test('play third attempt with winning guess', async () => {
+  const guesses = ['FAVOR', 'BIZZY', 'TESTS'];
+
+  async function readGuess() {
+    return guesses.pop();
+  }
+
+  const expectedReponses = [
+    [3, WON, [EXACT, EXACT, EXACT, EXACT, EXACT], 'Awesome'],
+    [2, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [1, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+  ];
+
+  let displayCallCount = 0;
+
+  function display(numberOfAttempts, status, matchResponse, message) {
+    if (numberOfAttempts <= 3) {
+      expect([numberOfAttempts, status, matchResponse, message]).toStrictEqual(expectedReponses.pop());
+      displayCallCount += 1;
+    }
+  }
+
+  await play('FAVOR', readGuess, display);
+
+  expect(displayCallCount).toBe(3);
+});
+
+test('play fourth attempt with winning guess', async () => {
+  const guesses = ['FAVOR', 'BIZZY', 'TESTS', 'SHIMS'];
+
+  async function readGuess() {
+    return guesses.pop();
+  }
+
+  const expectedReponses = [
+    [4, WON, [EXACT, EXACT, EXACT, EXACT, EXACT], 'Yay'],
+    [3, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [2, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [1, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+  ];
+
+  let displayCallCount = 0;
+
+  function display(numberOfAttempts, status, matchResponse, message) {
+    if (numberOfAttempts <= 4) {
+      expect([numberOfAttempts, status, matchResponse, message]).toStrictEqual(expectedReponses.pop());
+      displayCallCount += 1;
+    }
+  }
+
+  await play('FAVOR', readGuess, display);
+
+  expect(displayCallCount).toBe(4);
+});
+
+test('play fifth attempt with winning guess', async () => {
+  const guesses = ['FAVOR', 'BIZZY', 'TESTS', 'SHIMS', 'BIZZY'];
+
+  async function readGuess() {
+    return guesses.pop();
+  }
+
+  const expectedReponses = [
+    [5, WON, [EXACT, EXACT, EXACT, EXACT, EXACT], 'Yay'],
+    [4, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [3, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [2, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [1, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+  ];
+
+  let displayCallCount = 0;
+
+  function display(numberOfAttempts, status, matchResponse, message) {
+    if (numberOfAttempts <= 5) {
+      expect([numberOfAttempts, status, matchResponse, message]).toStrictEqual(expectedReponses.pop());
+      displayCallCount += 1;
+    }
+  }
+
+  await play('FAVOR', readGuess, display);
+
+  expect(displayCallCount).toBe(5);
+});
+
+test('play sixth attempt with winning guess', async () => {
+  const guesses = ['FAVOR', 'BIZZY', 'TESTS', 'SHIMS', 'BIZZY', 'TESTS'];
+
+  async function readGuess() {
+    return guesses.pop();
+  }
+
+  const expectedReponses = [
+    [6, WON, [EXACT, EXACT, EXACT, EXACT, EXACT], 'Yay'],
+    [5, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [4, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [3, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [2, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [1, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+  ];
+
+  let displayCallCount = 0;
+
+  function display(numberOfAttempts, status, matchResponse, message) {
+    if (numberOfAttempts <= 6) {
+      expect([numberOfAttempts, status, matchResponse, message]).toStrictEqual(expectedReponses.pop());
+      displayCallCount += 1;
+    }
+  }
+
+  await play('FAVOR', readGuess, display);
+
+  expect(displayCallCount).toBe(6);
+});
+
+test('play sixth attempt with non-winning guess', async () => {
+  const guesses = ['SHIMS', 'BIZZY', 'TESTS', 'SHIMS', 'BIZZY', 'TESTS'];
+
+  async function readGuess() {
+    return guesses.pop();
+  }
+
+  const expectedReponses = [
+    [6, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], 'It was FAVOR, better luck next time'],
+    [5, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [4, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [3, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [2, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [1, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+  ];
+
+  let displayCallCount = 0;
+
+  function display(numberOfAttempts, status, matchResponse, message) {
+    if (numberOfAttempts <= 6) {
+      expect([numberOfAttempts, status, matchResponse, message]).toStrictEqual(expectedReponses.pop());
+      displayCallCount += 1;
+    }
+  }
+
+  await play('FAVOR', readGuess, display);
+
+  expect(displayCallCount).toBe(6);
+});
+

@@ -55,24 +55,27 @@ function determineStatus(response) {
 
 
 function createMessage(attempts, status) {
-  const message = ['', 'Amazing', 'Splendid', 'Awesome', 'Yay'];
+  const message = ['', 'Amazing', 'Splendid', 'Awesome', 'Yay', 'Yay', 'Yay', 'It was FAVOR, better luck next time'];
   return status === Status.WON ? message[attempts] : '';
 }
 
 
-function play(target, readGuess, display) {
-  const guess = readGuess();
-  const response = tally(guess, target);
-  const status = determineStatus(response);
-  const message = createMessage(1, status);
-  display(1, status, response, message);
-
-  if (status === Status.IN_PROGRESS) {
-    const guess = readGuess();
+async function play(target, readGuess, display) {
+  for (let i = 1; i <= 6; i++) {
+    const guess = await readGuess();
+    if (guess === undefined) {
+      break;
+    }
     const response = tally(guess, target);
     const status = determineStatus(response);
-    const message = createMessage(2, status);
-    display(2, status, response, message);
+    const message = createMessage(i, status);
+    display(i, status, response, message);
+    if (status === Status.WON) {
+      break;
+    }
+    if (status === Status.IN_PROGRESS && i === 6) {
+      display(i, status, response, 'It was FAVOR, better luck next time');
+    }
   }
 }
 
