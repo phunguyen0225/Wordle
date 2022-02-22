@@ -283,3 +283,26 @@ test('play sixth attempt with non-winning guess', async () => {
   expect(displayCallCount).toBe(6);
 });
 
+test('verify that readGuess is not called after the win on second attempt', async () => {
+  const guesses = ['FAVOR', 'TESTS'];
+  let guessCallCount = 0;
+
+  async function readGuess() {
+    guessCallCount += 1;
+    return guesses.pop();
+  }
+
+  expect(guessCallCount).toBe(2);
+});
+
+test('verify that readGuess is not called after loss on sixth attempt', async () => {
+  const guesses = ['SHIMS', 'BIZZY', 'TESTS', 'SHIMS', 'BIZZY', 'TESTS'];
+  let guessCallCount = 0;
+
+  async function readGuess() {
+    guessCallCount += 1;
+    return guesses.pop();
+  }
+
+  expect(guessCallCount).toBe(0);
+});
