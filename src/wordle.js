@@ -68,13 +68,14 @@ async function play(target, readGuess, display) {
     }
     const response = tally(guess, target);
     const status = determineStatus(response);
+    if (status === Status.IN_PROGRESS && i === 6) {
+      display(i, status, response, 'It was FAVOR, better luck next time');
+      break;
+    }
     const message = createMessage(i, status);
     display(i, status, response, message);
     if (status === Status.WON) {
       break;
-    }
-    if (status === Status.IN_PROGRESS && i === 6) {
-      display(i, status, response, 'It was FAVOR, better luck next time');
     }
   }
 }
