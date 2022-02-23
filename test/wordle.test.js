@@ -292,6 +292,19 @@ test('verify that readGuess is not called after the win on second attempt', asyn
     return guesses.pop();
   }
 
+  const expectedReponses = [
+    [2, WON, [EXACT, EXACT, EXACT, EXACT, EXACT], 'Splendid'],
+    [1, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+  ];
+
+  function display(numberOfAttempts, status, matchResponse, message) {
+    if (numberOfAttempts <= 2) {
+      expect([numberOfAttempts, status, matchResponse, message]).toStrictEqual(expectedReponses.pop());
+    }
+  }
+
+  await play('FAVOR', readGuess, display);
+
   expect(guessCallCount).toBe(2);
 });
 
@@ -304,5 +317,23 @@ test('verify that readGuess is not called after loss on sixth attempt', async ()
     return guesses.pop();
   }
 
-  expect(guessCallCount).toBe(0);
+  const expectedReponses = [
+    [6, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], 'It was FAVOR, better luck next time'],
+    [5, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [4, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [3, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [2, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+    [1, IN_PROGRESS, [NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH, NO_MATCH], ''],
+  ];
+
+
+  function display(numberOfAttempts, status, matchResponse, message) {
+    if (numberOfAttempts <= 6) {
+      expect([numberOfAttempts, status, matchResponse, message]).toStrictEqual(expectedReponses.pop());
+    }
+  }
+
+  await play('FAVOR', readGuess, display);
+
+  expect(guessCallCount).toBe(6);
 });
