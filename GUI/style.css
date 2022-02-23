@@ -7,6 +7,12 @@ hr {
     width: 500px;
 }
 
+button {
+    font-size: 30px;
+    border-radius: 15px;
+    background-color: lightgray;
+}
+
 #title {
     font-size: 36px;
     font-weight: bold;
@@ -16,7 +22,6 @@ hr {
 #grid {
     width: 350px;
     height: 420px;
-    background-color: green;
     margin: 0 auto;
     margin-top: 3px;
     display: flex;
@@ -25,7 +30,7 @@ hr {
 
 .cell {
     /* Box */
-    BORDER: 2px solid lightgray;
+    border: 2px solid lightgray;
     width: 60px;
     height: 60px;
     margin: 2.5px;
