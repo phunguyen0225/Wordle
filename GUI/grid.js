@@ -65,16 +65,17 @@ function initialize() {
 function readGuess() {
     let guessWord = '';
     for (let col = 0; col < column; col++) {
-        const currentCell = document.getElementById(currentRow.toString() + '-' + col.toString());
+        const currentCell = document.getElementById((currentRow - 1).toString() + '-' + col.toString());
         guessWord += currentCell.innerText;
     }
+
     return guessWord;
 }
 
 function display(numberOfAttempts, status, matchResponse, message) {
-    if (status === 'Won') {
+    if (status === 'Won' && numberOfAttempts === 1) {
         for (let col = 0; col < column; col++) {
-            const currentCell = document.getElementById(currentRow.toString() + '-' + col.toString());
+            const currentCell = document.getElementById((currentRow - 1).toString() + '-' + col.toString());
             currentCell.classList.add('exact');
         }
 
@@ -83,7 +84,8 @@ function display(numberOfAttempts, status, matchResponse, message) {
 
     } else if (status === 'In progress') {
         for (let col = 0; col < column; col++) {
-            const currentCell = document.getElementById(currentRow.toString() + '-' + col.toString());
+            const currentCell = document.getElementById((currentRow - 1).toString() + '-' + col.toString());
+
             if (matchResponse[col] === 'Exact') {
                 currentCell.classList.add('exact');
             } else if (matchResponse[col] === 'Match') {
