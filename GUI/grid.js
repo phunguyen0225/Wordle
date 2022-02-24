@@ -7,7 +7,7 @@ let currentColumn = 0;
 const currentRow = 0;
 
 let gameOver = false;
-const word = 'FAVOR';
+const target = 'FAVOR';
 
 window.onload = function () {
     initialize();
@@ -49,9 +49,7 @@ function initialize() {
         if (filledCell.innerText !== '') {
             document.getElementById('guess').disabled = false;
             const clicked = document.getElementById('guess');
-            clicked.addEventListener('click', reset);
-            currentRow += 1;
-            currentColumn = 0;
+            clicked.addEventListener('click', update);
         }
 
         if (!gameOver && currentRow === row) {
@@ -60,5 +58,40 @@ function initialize() {
     });
 }
 
-function reset() {
+function readGuess() {
+    let guessWord = '';
+    for (let col = 0; col < column; col++) {
+        const currentCell = document.getElementById(currentRow.toString() + '-' + col.toString());
+        guessWord += currentCell.innerText;
+    }
+    return guessWord;
+}
+
+function display(numberOfAttempts, status, matchResponse, message) {
+    if (status === 'Won') {
+        for (let item of matchResponse) {
+            for (let col = 0; col < column; col++) {
+                const currentCell = document.getElementById(currentRow.toString() + '-' + col.toString());
+                currentCell.classList.add('exact');
+            }
+        }
+        console.log(message);
+        gameOver = true;
+    } else if (status === 'In progress') {
+        for (let col = 0; col < column; col++) {
+            const currentCell = document.getElementById(currentRow.toString() + '-' + col.toString());
+            if (matchResponse[col] === 'Exact') {
+                currentCell.classList.add('exact')
+            } else if (matchResponse[col] === 'Match') {
+                currentCell.classList.add('match')
+            } else if (matchResponse[col] === 'NO_MATCH') {
+                currentCell.classList.add('noMatch')
+            }
+        }
+
+    }
+
+}
+function update() {
+    play(target, readGuess, display);
 }
