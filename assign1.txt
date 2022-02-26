@@ -1,0 +1,48 @@
+Assign1: Due 11:59PM CT February 25
+
+***Please review the top part of ../hw1/hw1.txt***
+***Your chance of success greatly increases if you start very early. Your chance of failure increases if you start late. Please use as many reviews as you possibly can.***
+
+Using Test First Development (no code without test first) let's implement the problem designed in hw2. Feel free to evolve that design and use judgment to make changes based on the improved understanding and learning. You are not required to use any of the design idea or languages you mentioned in hw2, apply decisions based on your renewed learnings.
+
+Please take small steps and ask for frequent reviews.
+
+First start with a tests list (tests.txt) and a canary test. Implement at most two more tests and minimum code to make those tests to pass. This is a great first step to complete and ask for a review.
+
+After completing the assignment (and only after) let's answer the following questions:
+
+1. What did you learn mainly in this assignment?
+
+There are a few things I learn from this assignment but the main thing is practicing Test Driven Development(TDD). I learn how to create test at the unit level of the code and make sure that code that works yesterday continue to work today. Not only testing at the unit level, I also create a mock/stub in the wordle.js file to test code that was dependent of each other.
+
+In this assignment I also learn how to write cleaner code. First I write enough code to make the test cases pass, and as I add more test cases, the code evolve itself. After getting most of the test cases, I refactor the code to make it easier to read and understand by others and myself. I refactor the code with high functional programming like using .filter() and .reduce(). Cleaner code help developers understand code faster and easier and it help reducing the cost of maintenance and time. It also help with the process of evolving the application, reducing time and effort reading and understanding code.
+
+Aside from TDD and write cleaner code using functional programming, I also learn a new language and framework while working on this project. In this case I learn JavaScript and JEST framework for testing code.
+
+
+2. How is the current design different, if at all, from the strategic design created in hw2?
+
+It is very different from the strategic design that we first created. At first I thought we will be creating a grid inside the html file with multiple div tag but when I start learning JavaScript, I was utilizing the JavaScript event handlers and DOM in HTML to create the grid. 
+
+The function that I created in the current design is completely different in the initial design. As the code evolve, more functionality need to be create to get the job done. I redesign the structure as I create new tests at the unit level. I created way more function in the current design now than the initial design.
+
+3. Were there any surprises or things you did not expect along the way? Any particular problem faced, things you had to tackle that you did not expect beforehand?
+
+For me it was the language and the new framework that was a little challenging because I didn't know JavaScript and JEST beforehand. Also, understanding what kind of level that JavaScript offer such as high functional programming. It was a little hard to understand it at first, but as i write more code it becomes easier to understand.
+
+Another challlenge was utilizing the function in the wordle.js file after creating grid in the grid.js. I had a few bugs that I still need to work on to meet the requirements. 
+
+
+Total[100]: 100
+Program pops up the GUI when run[10]:
+Able to play the game[10]:
+  Found a bug in the GUI:
+  Enter RIVE then backspace, E is removed
+  Now enter ER and then backspace, R is not removed
+All tests pass[10]:
+Test quality[20]:
+Code coverage[10]:
+Quality of design of core logic for tally[10]:
+Quality of design of the play rules[10]:
+Code quality[10]:
+Response to questions[10]:
